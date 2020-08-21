@@ -22,7 +22,7 @@ class Graph:
         """
         Add a directed edge to the graph.
         """
-        # find vertext v1 in our vertices, add v2 to the set of edges
+        # find vertex v1 in our vertices, add v2 to the set of edges
         if v1 in self.vertices and v2 in self.vertices:
             self.vertices[v1].add(v2)
 
@@ -38,19 +38,25 @@ class Graph:
         beginning from starting_vertex.
         """
         # create an empty queue and enqueue the starting_vertex
+        bft_queue = Queue()
+        bft_queue.enqueue(starting_vertex)
         # create an empty set to track visited vertices
+        visited = set()
 
         # while queue is not empty
+        while bft_queue is not None:
             # get current vertex (dequeue from queue)
-
+            current = bft_queue.dequeue()
             # check if the current_vertex has not been visited:
+            if current not in visited:
                 # print current vertex
+                print(current)
                 # mark current vertex as visited
-                    # add current vertex to a visited_set
+                # add current vertex to a visited_set
+                visited.add(current)
                 # queue up all the current vertex's neighbors, so we can visit them next
-
-
-        pass  # TODO
+                neighbors = self.get_neighbors(current)
+                bft_queue.enqueue(neighbors)
 
     def dft(self, starting_vertex):
         """
@@ -171,7 +177,7 @@ if __name__ == '__main__':
         1, 2, 4, 3, 7, 6, 5
         1, 2, 4, 3, 7, 5, 6
     '''
-    # graph.bft(1)
+    graph.bft(1)
 
     '''
     Valid DFT paths:
