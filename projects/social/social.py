@@ -1,5 +1,18 @@
 import random
 
+class Queue():
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, value):
+        self.queue.append(value)
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    def size(self):
+        return len(self.queue)
+
 class User:
     def __init__(self, name):
         self.name = name
@@ -80,10 +93,30 @@ class SocialGraph:
 
         The key is the friend's ID and the value is the path.
         """
+        # create an empty dict to track visited vertices
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
-        return visited
 
+        # get all friend ids and add to visited as keys
+        # do bfs on friend ids to get shortest path and add as value
+        queue = Queue()
+        queue.enqueue([user_id])
+
+        while queue.size() > 0:
+            path = queue.dequeue()
+            current_friend = path[-1]
+            # if current friend is not in visited:
+            if current_friend not in visited:
+                # add current friend : (path to friend)
+                visited[current_friend] = path
+                # loop through friends of current friend
+                for friend in self.friendships[current_friend]:
+                    if friend not in visited:
+                    # if friend not in visited:
+                        new_path = list(path)
+                        new_path.append(friend)
+                        queue.enqueue(new_path)
+        return visited
 
 if __name__ == '__main__':
     sg = SocialGraph()
@@ -91,3 +124,19 @@ if __name__ == '__main__':
     print(sg.friendships)
     connections = sg.get_all_social_paths(1)
     print(connections)
+
+
+'''
+U
+Input is user_id
+Output
+    dict containing
+        every user in user_id's extended network
+        shortest friendship path between each
+P
+BFT guarantees shortest path is the first path found
+Starting at user_id
+    traverse through connected ids
+    save connected ids to visited dict as key
+        length of connection as value
+'''
